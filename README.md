@@ -141,7 +141,6 @@ wine_all %>%
 
 ![](images/wine_all_ggpairs.png)
 
-
 Despite initial misgivings it looks like the acidity variables are not especially
 correlated with each other so there's no justification to remove them. 
 
@@ -156,6 +155,9 @@ wine_all %>%
   ggpairs(aes(alpha = 0.3)) +
   theme(text= element_text(size = 6)) # make headers more legible
 ```
+
+![](images/wine_all_remaining_ggpairs.png)
+
 It's evident from this that `alcohol` and `density` have a strong positive
 correlation of 0.7, so we don't need both here.  Drop `density` from the model.
 
@@ -178,6 +180,9 @@ wine_all %>%
   select(quality, wine_colour, region) %>%
   ggpairs() 
 ```
+
+![](images/wine_all_cat_ggpairs.png)
+
 These plots suggest no practical correlation between `quality` and either
 `region` or `colour`.
 
@@ -193,11 +198,18 @@ mod1a <- lm(quality ~ alcohol, data = wine_all)
 
 # check the diagnostics
 check_model(mod1a)
+```
 
+![](images/mod1a_diagnostic.png)
+
+
+```{r}
 # check the summary 
 summary(mod1a)
 
 ```
+
+![](images/mod1a_summary.png)
 
 The diagnostic plots don't give any reason for concern at this stage.  Now check
 what `chlorides` looks like.
@@ -208,20 +220,32 @@ mod1b <- lm(quality ~ chlorides, data = wine_all)
 
 # check the diagnostics
 check_model(mod1b)
+```
 
+![](images/mod1b_diagnostic.png)
+
+```{r}
 # check the summary output
 summary(mod1b)
 ```
+
+![](images/mod1b_summary.png)
+
 In this case homogeneity and linearity are not ideal.  Is this due to outliers?
 
 ```{r}
 check_outliers(mod1b)
 ```
 
+![](images/mod1b_outliers.png)
+
 or non-normal residuals distribution?
 ```{r}
 check_normality(mod1b)
 ```
+
+![](images/mod1b_normality.png)
+
 This may explain some of the "imperfect" diagnostic plots.
 
 Taking the third option of `total_sulfur_dioxide`;
@@ -232,10 +256,16 @@ mod1c <- lm(quality ~ total_sulfur_dioxide, data = wine_all)
 
 # check the diagnostics
 check_model(mod1c)
+```
 
+![](images/mod1c_diagnostic.png)
+
+```{r}
 # check the summary output
 summary(mod1c)
 ```
+
+![](images/mod1c_summary.png)
 
 Once again homogeneity and linearity don't look ideal.  
 
@@ -243,6 +273,8 @@ Once again homogeneity and linearity don't look ideal.
 check_outliers(mod1b)
 check_normality(mod1b)
 ```
+
+![](images/mod1c_outliers.png)
 
 Once again this is due to non-normally distributed residuals.
 
