@@ -43,7 +43,7 @@ wine_red <- read_csv(here("data/wine_quality_red.csv"))
 head(wine_red)
 ```
 
-![](wine_regression/images/head_wine_red.png)
+![](images/head_wine_red.png)
 
 So there's an ID column and 13 variables including `quality`. 
 
