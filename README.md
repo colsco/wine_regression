@@ -42,8 +42,9 @@ Read the data for red wine;
 wine_red <- read_csv(here("data/wine_quality_red.csv"))
 head(wine_red)
 ```
-
+<br>
 ![](images/head_wine_red.png)
+<br>
 
 So there's an ID column and 13 variables including `quality`. 
 
