@@ -294,6 +294,8 @@ wine_residuals <- wine_all %>%
 ggpairs(wine_residuals, aes(alpha = 0.3)) 
 ```
 
+![](images/resid_ggpairs.png)
+
 There aren't any immediately obvious strong correlations between any numeric 
 variables here.
 
@@ -305,9 +307,17 @@ variables here.
 mod2a <- lm(quality ~ alcohol + chlorides, data = wine_all)
 # check the diagnostics
 check_model(mod2a)
+```
+
+![](images/mod2a_diagnostic.png)
+
+```{r}
 # Summarise
 summary(mod2a)
 ```
+
+![](images/mod2a_summary.png)
+
 This returns an adjusted R^2 of around 0.19, suggesting that these predictors
 could account for approximately 19% of the variation in our data.  Chlorides is
 also shown to be statistically significant in this model.
@@ -321,10 +331,17 @@ mod2b <- lm(quality ~ alcohol + volatile_acidity, data = wine_all)
 
 # check the diagnostics
 check_model(mod2b)
+```
 
-# summarise
+![](images/mod2b_diagnostic.png)
+
+```{r}
+# Summarise
 summary(mod2b)
 ```
+
+![](images/mod2b_summary.png)
+
 This looks better than `chlorides`, explaining around 23% of the variation
 in our data.
 
@@ -336,10 +353,16 @@ mod2c <- lm(quality ~ alcohol + residual_sugar, data = wine_all)
 
 # check diagnostics
 check_model(mod2c)
+```
 
-# summarise
+![](images/mod2c_diagnostic.png)
+
+```{r}
+# Summarise
 summary(mod2c)
 ```
+
+![](images/mod2c_summary.png)
 
 It looks like `mod2b` using `alcohol` and `volatile_acidity` comes out as the
 best option for a second predictor. It's worth noting however that although 
@@ -356,6 +379,8 @@ We want to compare the two;
 ```{r}
 anova(mod1a, mod2b)
 ```
+
+![](images/anova_1a_2b.png)
 
 The addition of `volatile_acidity` in mod2b creates a better model with a lower 
 Residual Sum of Squares, low p-value and high significance.
@@ -378,6 +403,8 @@ mod_interaction <- lm(quality ~ alcohol + volatile_acidity + alcohol:volatile_ac
 summary(mod_interaction)
 ```
 
+![](images/interaction_summary.png)
+
 Adding this interaction only adds a tiny amount to the adjusted R^2. It might
 be worth checking using ANOVA if including this interaction in the model is justified:
 
@@ -386,6 +413,7 @@ be worth checking using ANOVA if including this interaction in the model is just
 anova(mod2b, mod_interaction)
 ```
 
+![](images/interaction_anova.png)
 
 The interaction is significant, so the final model is:
 
@@ -421,6 +449,8 @@ regsubsets_forward <- regsubsets(quality ~ ., # use all of the possible variable
 plot(regsubsets_forward)
 ```
 
+![](images/leaps_bic_plot.png)
+
 This resulting plot indicates that the best performing model (i.e. top row) uses
 `wine_colourwhite`,`volatile_acidity`, `residual_sugar`, `chlorides`, `sulphates`,  and `alcohol`. 
 
@@ -429,14 +459,18 @@ summary(regsubsets_forward)$which[6,]
 
 ```
 
+![](images/regsubsets6.png)
 
-The bIC scores can also be plotted to check predictor performance;
+The BIC scores can also be plotted to check predictor performance;
 
 ```{r}
 sum_regsubsets_forward <- summary(regsubsets_forward)
 
 sum_regsubsets_forward$bic
 ```
+
+![](images/regsubsets_bic_scores_6.png)
+
 And then plot the BIC scores;
 
 ```{r}
@@ -444,7 +478,7 @@ plot(summary(regsubsets_forward)$bic, type = "b")
 
 ```
 
-
+![](images/bic_plot.png)
 
 This plot suggests that the BIC score is lowest using 6 different predictor
 variables in the model. We can check which variables these are:
@@ -454,6 +488,7 @@ variables in the model. We can check which variables these are:
 sum_regsubsets_forward$which[6, ]
 ```
 
+![](images/regsubsets6_2.png)
 
 This means that the automated model build has suggested a model with
 `wine_colourwhite`,`volatile_acidity`, `residual_sugar`, `chlorides`, `sulphates`,
@@ -467,6 +502,8 @@ What about if we limited it to two predictors?
 ```{r}
 sum_regsubsets_forward$which[2, ]
 ```
+
+![](images/regsubsets2.png)
 
 The best two predictors are suggested as `volatile_acidity` and `alcohol`. 
 
