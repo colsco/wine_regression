@@ -54,7 +54,7 @@ wine_white <- read_csv(here("data/wine_quality_white.csv"))
 head(wine_white)
 ```
 
-
+![](images/head_wine_white.png)
 
 This is in the same format as the red wine data, with the same variables. This 
 suggests that joining the two datasets with a colour identifying column could be
@@ -71,8 +71,6 @@ wine_white <- wine_white %>%
   
 ```
 
-
-
 If the two datasets are to be combined then the `wine_id` number needs to be
 handled to avoid duplicates.  The `wine_id` isn't something that necessarily 
 reflects the physiochemical properties of a "good" wine, so could probably be 
@@ -87,20 +85,19 @@ wine_all <- wine_all %>%
   select(-wine_id)
 ```
 
-
-
-
 Apart from wine colour, there's only one categorical data column which might 
 need to be converted to a factor for the purposes of regression - `region`.  
 Check how many discrete values are involved;
 
- 
 
 ```{r}
 wine_all %>%
   distinct(region) %>%
   summarise(number_of_regions = n())
 ```
+
+![](images/regions.png)
+
 
 So there are five regions; Australia, Spain, Italy, USA, France. These and the
 wine colour should be changed to factor data;
@@ -115,10 +112,8 @@ wine_all <- wine_all %>%
 # class(wine_all$wine_colour)
 ```
 
-
 Now check for aliased variables (i.e. combinations of variables in which one or
 more of the variables can be calculated from other variables):
-
 
 
 ```{r}
@@ -130,8 +125,6 @@ There are no obvious aliases returned, but some sound very similar (e.g.
 `total_sulfur_dioxide`) so it's worth watching these as the regression progresses.
 
 
-
-
 ## First predictor variable
 
 `GGally::ggpairs()` is a useful tool for deciding which variable to pick as a 
@@ -139,13 +132,16 @@ predictor, but can take some time to run.  This can be mitigated by splitting
 up the data beforehand;
 
  
-
 ```{r, message = FALSE}
 # start with quality and acidity variables 
 wine_all %>%
   select(quality, fixed_acidity, volatile_acidity, citric_acid, p_h) %>%
   ggpairs(aes(alpha = 0.3))
 ```
+
+![](images/wine_all_ggpairs.png)
+
+
 Despite initial misgivings it looks like the acidity variables are not especially
 correlated with each other so there's no justification to remove them. 
 
