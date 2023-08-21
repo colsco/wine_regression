@@ -1,5 +1,5 @@
 ---
-title: "CodeClan Wine - Linear Regression Model Building"
+title: "CodeClan Wine: Linear Regression Modelling"
 output:
   html_document:
     toc: true
@@ -103,13 +103,10 @@ wine_all <- wine_all %>%
 ```
 
 
-
-
 Apart from wine colour, there's only one categorical data column which might 
 need to be converted to a factor for the purposes of regression - `region`.  
 Check how many discrete values are involved;
 
- 
 
 ```{r}
 wine_all %>%
@@ -376,11 +373,7 @@ anova(mod2b, mod_interaction)
 
 The interaction is significant, so the final model is:
 
-<center>
-
 `quality ~ alcohol + volatile_acidity + alcohol:volatile_acidity`
-
-</center>
 
 The model only explains around 24% of the variation in our data, but it might 
 still be useful depending on the context of the data and situation it's being
@@ -417,7 +410,7 @@ summary(regsubsets_forward)$which[6,]
 ```
 
 
-The bIC scores can also be plotted to check predictor performance;
+The BIC scores can also be plotted to check predictor performance;
 
 ```{r}
 sum_regsubsets_forward <- summary(regsubsets_forward)
